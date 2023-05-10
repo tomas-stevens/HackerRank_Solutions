@@ -1,0 +1,85 @@
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Collections;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
+using System.Text;
+using System;
+
+class Result
+{
+
+    /*
+     * Complete the 'serviceLane' function below.
+     *
+     * The function is expected to return an INTEGER_ARRAY.
+     * The function accepts following parameters:
+     *  1. INTEGER n
+     *  2. 2D_INTEGER_ARRAY cases
+        3. array width
+     */
+
+    public static List<int> serviceLane(int n, List<List<int>> cases, List<int> width)
+    {
+        List<int> result = new List<int>();
+        var min = 0;
+        var max = 0;
+        
+        
+        for(var iter = 0; iter < cases.Count; iter++){
+            
+            min = cases[iter][0];
+            max = cases[iter][1];
+            
+            var tempResu =width[min];
+            
+            for(var iter2 = min; iter2 <= max; iter2++) {
+                if(tempResu > width[iter2])
+                    tempResu = width[iter2];                
+            }      
+            result.Add(tempResu);
+        
+        }
+        
+        
+        
+        return result;
+    }
+
+}
+
+class Solution
+{
+    public static void Main(string[] args)
+    {
+        TextWriter textWriter = new StreamWriter(@System.Environment.GetEnvironmentVariable("OUTPUT_PATH"), true);
+
+        string[] firstMultipleInput = Console.ReadLine().TrimEnd().Split(' ');
+
+        int n = Convert.ToInt32(firstMultipleInput[0]);
+
+        int t = Convert.ToInt32(firstMultipleInput[1]);
+
+        List<int> width = Console.ReadLine().TrimEnd().Split(' ').ToList().Select(widthTemp => Convert.ToInt32(widthTemp)).ToList();
+
+        List<List<int>> cases = new List<List<int>>();
+
+        for (int i = 0; i < t; i++)
+        {
+            cases.Add(Console.ReadLine().TrimEnd().Split(' ').ToList().Select(casesTemp => Convert.ToInt32(casesTemp)).ToList());
+        }
+
+        List<int> result = Result.serviceLane(n, cases, width);
+
+        textWriter.WriteLine(String.Join("\n", result));
+
+        textWriter.Flush();
+        textWriter.Close();
+    }
+}

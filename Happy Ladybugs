@@ -1,0 +1,93 @@
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Collections;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
+using System.Text;
+using System;
+
+class Result
+{
+
+    /*
+     * Complete the 'happyLadybugs' function below.
+     *
+     * The function is expected to return a STRING.
+     * The function accepts STRING b as parameter.
+     */
+
+    public static string happyLadybugs(string b)
+    {
+
+        var sumVal = 0;
+        var count = 0;
+        bool happy = true;
+       
+        
+        if(b.Contains('_') == true){
+            int[] array = new int[26];
+            for(var iter = 0; iter < array.Length; iter++){
+                for(var iter2 = 0; iter2 < b.Length; iter2++){
+                    if(b[iter2] == 'A' + iter) 
+                    array[iter]++;
+                }
+            }
+            foreach(int total in array){
+                if(total == 1){
+                    happy = false;
+                    break;
+                }
+            }
+        }
+        else{
+            for(int i=0;i<b.Length;i++)
+                {
+                    if (b[i] != '_')
+                    {
+                        bool friendleft = i > 0 && b[i - 1] == b[i];
+                        bool friendright = i < b.Length - 1 && b[i + 1] == b[i];
+                        if (!friendleft && !friendright)
+                        {
+                            happy = false;
+                            break;
+                        }
+                    }
+                }
+        }
+
+        
+        
+        return(happy ? "YES" : "NO");
+    }
+
+}
+
+class Solution
+{
+    public static void Main(string[] args)
+    {
+        TextWriter textWriter = new StreamWriter(@System.Environment.GetEnvironmentVariable("OUTPUT_PATH"), true);
+
+        int g = Convert.ToInt32(Console.ReadLine().Trim());
+
+        for (int gItr = 0; gItr < g; gItr++)
+        {
+            int n = Convert.ToInt32(Console.ReadLine().Trim());
+
+            string b = Console.ReadLine();
+
+            string result = Result.happyLadybugs(b);
+
+            textWriter.WriteLine(result);
+        }
+
+        textWriter.Flush();
+        textWriter.Close();
+    }
+}
